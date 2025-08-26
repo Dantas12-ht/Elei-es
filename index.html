@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/imagem/Gazeta1.32.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gazeta 132 - Resultados Eleitorais – Ellen White 2025</title>
+  <style>
+    :root {
+      --bg: #f8fafc;      /* slate-50 */
+      --card: #ffffff;    /* white */
+      --text: #0f172a;    /* slate-900 */
+      --muted: #64748b;   /* slate-500 */
+      --border: #e2e8f0;  /* slate-200 */
+      --primary: #2563eb; /* blue-600 */
+      --accent: #0ea5e9;  /* sky-500 */
+      --ok: #10b981;      /* emerald-500 */
+      --warn: #f59e0b;    /* amber-500 */
+      --danger: #ef4444;  /* red-500 */
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Noto Sans', 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji'; background: var(--bg); color: var(--text); }
+    header { position: sticky; top:0; z-index:10; backdrop-filter: blur(6px); background: rgba(255,255,255,.8); border-bottom: 1px solid var(--border); }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 12px 16px; }
+    h1 { font-size: 20px; margin: 0; display:flex; align-items:center; gap:8px; }
+    .badge { background:#eef2ff; color:#3730a3; border-radius: 999px; padding: 2px 10px; font-size:12px; }
+    .row { display: grid; gap: 16px; }
+    @media (min-width: 960px){ .row.cols-3 { grid-template-columns: 2fr 1fr; } }
+    .grid { display:grid; gap:12px; }
+    @media (min-width: 800px){ .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 1px 0 rgba(15,23,42,.02); }
+    .card h2 { font-size: 16px; margin: 0; }
+    .card .body { padding: 12px 14px; }
+    .card .head { padding: 12px 14px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    label { display:block; font-size:12px; color: var(--muted); margin-bottom: 4px; }
+    select, input[type="text"] { width: 100%; padding: 10px 12px; border:1px solid var(--border); border-radius: 10px; background:#fff; font-size:14px; }
+    .filters { display:grid; gap: 10px; grid-template-columns: 1fr; }
+    @media (min-width: 900px){ .filters { grid-template-columns: repeat(5, 1fr); } }
+    .toolbar { display:flex; gap:8px; margin-left:auto; }
+    button { padding: 8px 12px; border:1px solid var(--border); background:#fff; border-radius:10px; font-size:14px; cursor:pointer; }
+    button.primary { border-color: transparent; background: var(--primary); color:#fff; }
+    .progress { height:10px; background:#e5e7eb; border-radius: 999px; overflow:hidden; }
+    .progress > span { display:block; height:100%; background: var(--primary); }
+    .muted { color: var(--muted); }
+    .kpi { border:1px solid var(--border); padding:10px; border-radius:12px; }
+    .kpi .label { font-size:12px; color: var(--muted); }
+    .kpi .value { font-size:20px; font-weight: 700; }
+
+    /* Lista de candidatos */
+    .cand { display:grid; gap:8px; grid-template-columns: 1fr; padding: 10px 0; }
+    .cand + .cand { border-top:1px solid var(--border); }
+    @media (min-width: 900px){ .cand { grid-template-columns: 5fr 3fr 4fr; align-items:center; } }
+    .rank { width:32px; height:32px; border-radius: 50%; background:#e5e7eb; display:grid; place-items:center; font-weight:700; }
+    .cand-title { font-weight:600; }
+    .cand-sub { font-size:12px; color: var(--muted); }
+
+    .bar { height: 10px; background:#e5e7eb; border-radius: 999px; overflow:hidden; }
+    .bar > span { display:block; height:100%; background: var(--ok); }
+
+    /* Pizza de composição (conic-gradient) */
+    .pie { --validos: 60; --brancos: 10; --nulos: 30; width: 170px; height: 170px; border-radius:50%; margin:auto; background:
+      conic-gradient(
+        var(--primary) 0 calc(var(--validos)*1%),
+        #9ca3af 0 calc((var(--validos) + var(--brancos))*1%),
+        var(--danger) 0 100%
+      );
+      position: relative;
+    }
+    .pie::after{ content:""; position:absolute; inset: 24px; background:#fff; border-radius:50%; }
+    .legend { display:flex; gap:10px; flex-wrap: wrap; align-items:center; justify-content:center; font-size:12px; }
+    .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+
+    /* Barras horizontais simples para gráfico por candidato */
+    .bars { display:grid; gap:8px; }
+    .bars .item { display:grid; grid-template-columns: 130px 1fr auto; gap:10px; align-items:center; }
+    .bars .track { height:12px; background:#e5e7eb; border-radius: 8px; overflow:hidden; }
+    .bars .fill { height:100%; background: var(--accent); }
+
+    footer { border-top:1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap" style="display:flex; align-items:center; gap:10px;">
+      <h1>🗳️Gazeta 132 Resultados Eleitorais – Ellen White <span class="badge">Escolar</span></h1>
+      <div class="toolbar">
+        <button id="btnRefresh" title="Recarregar">Atualizar</button>
+        <button class="primary" id="btnAbout">Sobre</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom: 30px;">
+    <!-- Filtros -->
+    <section class="card" aria-label="Filtros">
+      <div class="body filters">
+        <div>
+          <label for="selUF">UF</label>
+          <select id="selUF"></select>
+        </div>
+        <div>
+          <label for="selMunicipio">Município</label>
+          <select id="selMunicipio"></select>
+        </div>
+        <div>
+          <label for="selCargo">Cargo</label>
+          <select id="selCargo"></select>
+        </div>
+        <div>
+          <label for="selTurno">Turno</label>
+          <select id="selTurno"></select>
+        </div>
+        <div>
+          <label for="txtBusca">Buscar candidato</label>
+          <input type="text" id="txtBusca" placeholder="Nome, número, partido..." />
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumo -->
+    <section class="row cols-3" style="margin-top:16px;">
+      <article class="card">
+        <div class="head">
+          <h2 id="titleLocal">Título</h2>
+          <div class="muted" id="lblAtualizacao">—</div>
+        </div>
+        <div class="body">
+          <div class="muted" style="display:flex; gap:8px; align-items:center; flex-wrap: wrap;">
+            <span>Apuração:</span>
+            <span class="badge" id="lblApuracao">0%</span>
+          </div>
+          <div class="grid cols-3" style="margin-top:12px;">
+            <div class="kpi"><div class="label">Votos válidos</div><div class="value" id="kpiValidos">0</div></div>
+            <div class="kpi"><div class="label">Brancos</div><div class="value" id="kpiBrancos">0</div></div>
+            <div class="kpi"><div class="label">Nulos</div><div class="value" id="kpiNulos">0</div></div>
+          </div>
+          <div style="margin-top:12px;">
+            <div class="progress" aria-label="Progresso da apuração"><span id="apuracaoBar" style="width:0%"></span></div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="card">
+        <div class="head"><h2>Composição dos votos</h2></div>
+        <div class="body" style="display:grid; gap:12px;">
+          <div class="pie" id="pie" aria-label="Gráfico de composição"></div>
+          <div class="legend">
+            <span><i class="dot" style="background: var(--primary);"></i> Válidos</span>
+            <span><i class="dot" style="background: #9ca3af;"></i> Brancos</span>
+            <span><i class="dot" style="background: var(--danger);"></i> Nulos</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Ranking de candidatos -->
+    <section class="card" style="margin-top:16px;">
+      <div class="head">
+        <h2>Candidatos – ordenação</h2>
+        <div>
+          <label for="selOrder" class="muted" style="display:inline; margin-right:6px;">Ordenar por</label>
+          <select id="selOrder">
+            <option value="votos">Votos</option>
+            <option value="nome">Nome</option>
+            <option value="numero">Número</option>
+          </select>
+        </div>
+      </div>
+      <div class="body" id="listaCandidatos"></div>
+    </section>
+
+    <!-- Gráfico por candidato -->
+    <section class="card" style="margin-top:16px;">
+      <div class="head"><h2>Distribuição de votos por candidato</h2></div>
+      <div class="body">
+        <div class="bars" id="bars"></div>
+      </div>
+    </section>
+
+    <p class="muted" style="font-size:12px; margin-top:16px;">*Protótipo educativo inspirado na interface do TSE. Não é oficial nem usa dados em tempo real.</p>
+  </main>
+
+  <footer>
+    <div class="wrap" style="padding: 16px; font-size: 14px; color:var(--muted);">
+      Criado para trabalho escolar.
+    </div>
+  </footer>
+
+  <script>
+    // ===================== DADOS DE EXEMPLO =====================
+    const MOCK_DATA = {
+      atualizacao: "21/08/2025 10:02",
+      uf: {
+        SP: {
+          nome: "São Paulo",
+          municipios: {
+            71072: {
+              nome: "Capão Redondo",
+              cargos: {
+                prefeito: {
+                  turno: {
+                    1: {
+                      totalApurado: 0,
+                      votos: { validos: 0, brancos: 0, nulos: 0, abstencoes: 0 },
+                      candidatos: [
+                        { numero: 97, nome: "Pedro", partido: "PSIU", coligacao:"PSIY", votos: 0, situacao: "—" },
+                        { numero: 60, nome: "Beatriz", partido: "PQUI", coligacao:"PQUI", votos: 0, situacao: "—" },
+                        
+                      ]
+                },
+                  }
+                }
+              }
+            }
+          }
+        },
+      }
+    };
+
+    // ===================== HELPERS =====================
+    const $$ = (sel, el=document) => el.querySelector(sel);
+    const $$$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+    const fmt = (n) => (n||0).toLocaleString('pt-BR');
+    const pct = (part, total) => total ? (part/total)*100 : 0;
+
+    function setOptions(select, entries, formatter){
+      select.innerHTML = '';
+      entries.forEach(([value, obj]) => {
+        const opt = document.createElement('option');
+        opt.value = value;
+        opt.textContent = formatter ? formatter(value, obj) : value;
+        select.appendChild(opt);
+      });
+    }
+
+    // ===================== ESTADO UI =====================
+    const selUF = $$('#selUF');
+    const selMunicipio = $$('#selMunicipio');
+    const selCargo = $$('#selCargo');
+    const selTurno = $$('#selTurno');
+    const txtBusca = $$('#txtBusca');
+    const selOrder = $$('#selOrder');
+
+    let state = { uf: 'SP', municipio: '71072', cargo: 'prefeito', turno: '1', busca: '', order: 'votos' };
+
+    function loadUF(){
+      setOptions(selUF, Object.entries(MOCK_DATA.uf), (v, o)=> `${v} – ${o.nome}`);
+      selUF.value = state.uf;
+      loadMunicipios();
+    }
+
+    function loadMunicipios(){
+      const u = MOCK_DATA.uf[state.uf];
+      const entries = Object.entries(u.municipios);
+      setOptions(selMunicipio, entries, (v,o)=> o.nome);
+      if(!entries.find(([id])=>id===state.municipio)) state.municipio = entries[0][0];
+      selMunicipio.value = state.municipio;
+      loadCargos();
+    }
+
+    function loadCargos(){
+      const m = MOCK_DATA.uf[state.uf].municipios[state.municipio];
+      const entries = Object.entries(m.cargos);
+      setOptions(selCargo, entries, (v)=> v[0].toUpperCase()+v.slice(1));
+      if(!entries.find(([id])=>id===state.cargo)) state.cargo = entries[0][0];
+      selCargo.value = state.cargo;
+      loadTurnos();
+    }
+
+    function loadTurnos(){
+      const t = MOCK_DATA.uf[state.uf].municipios[state.municipio].cargos[state.cargo].turno;
+      const entries = Object.entries(t);
+      setOptions(selTurno, entries, (v)=> `${v}º turno`);
+      if(!entries.find(([id])=>id===state.turno)) state.turno = entries[0][0];
+      selTurno.value = state.turno;
+      renderAll();
+    }
+
+    // ===================== RENDER =====================
+    function getDataSlice(){
+      const UF = MOCK_DATA.uf[state.uf];
+      const municipio = UF.municipios[state.municipio];
+      const cargo = municipio.cargos[state.cargo];
+      const turnoData = cargo.turno[state.turno];
+      const totalValidos = turnoData.votos.validos;
+      const totalComputado = turnoData.votos.validos + turnoData.votos.brancos + turnoData.votos.nulos;
+      return { UF, municipio, turnoData, totalValidos, totalComputado };
+    }
+
+    function renderResumo(){
+      const { municipio, turnoData } = getDataSlice();
+      const lblTitle = $$('#titleLocal');
+      const lblAtual = $$('#lblAtualizacao');
+      const lblApuracao = $$('#lblApuracao');
+      const bar = $$('#apuracaoBar');
+      const kValidos = $$('#kpiValidos');
+      const kBrancos = $$('#kpiBrancos');
+      const kNulos = $$('#kpiNulos');
+
+      lblTitle.textContent = `${municipio.nome} • ${state.cargo[0].toUpperCase()+state.cargo.slice(1)} • ${state.turno}º turno`;
+      lblAtual.textContent = `Atualizado em ${MOCK_DATA.atualizacao}`;
+      lblApuracao.textContent = `${turnoData.totalApurado.toFixed(1)}%`;
+      bar.style.width = `${turnoData.totalApurado}%`;
+      kValidos.textContent = fmt(turnoData.votos.validos);
+      kBrancos.textContent = fmt(turnoData.votos.brancos);
+      kNulos.textContent = fmt(turnoData.votos.nulos);
+
+      // Atualiza pizza por CSS vars
+      const pie = $$('#pie');
+      const v = turnoData.votos;
+      const total = v.validos + v.brancos + v.nulos;
+      const pValidos = pct(v.validos, total);
+      const pBrancos = pct(v.brancos, total);
+      pie.style.setProperty('--validos', pValidos.toFixed(2));
+      pie.style.setProperty('--brancos', pBrancos.toFixed(2));
+      // nulos é o restante
+    }
+
+    function renderCandidatos(){
+      const { turnoData, totalValidos } = getDataSlice();
+      const cont = $$('#listaCandidatos');
+      const busca = state.busca.trim().toLowerCase();
+
+      let lista = [...turnoData.candidatos].map(c => ({...c, percentual: pct(c.votos, totalValidos)}));
+      if (busca) {
+        lista = lista.filter(c => `${c.nome} ${c.partido} ${c.numero}`.toLowerCase().includes(busca));
+      }
+      if (state.order === 'votos') lista.sort((a,b)=> b.votos - a.votos);
+      if (state.order === 'nome') lista.sort((a,b)=> a.nome.localeCompare(b.nome));
+      if (state.order === 'numero') lista.sort((a,b)=> a.numero - b.numero);
+
+      cont.innerHTML = '';
+      lista.forEach((c, i) => {
+        const row = document.createElement('div');
+        row.className = 'cand';
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="rank">${i+1}</div>
+            <div>
+              <div class="cand-title">${c.nome} <span class="muted">• ${c.partido}</span></div>
+              <div class="cand-sub">Nº ${c.numero} ${c.coligacao?`• ${c.coligacao}`:''}</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:700;">${fmt(c.votos)} votos</div>
+            <div class="muted">${c.situacao||'—'}</div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span>${c.percentual.toFixed(2)}%</span>
+              <span class="muted">de ${fmt(totalValidos)} válidos</span>
+            </div>
+            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${c.percentual.toFixed(2)}"><span style="width:${c.percentual}%;"></span></div>
+          </div>
+        `;
+        cont.appendChild(row);
+      });
+    }
+
+    function renderBars(){
+      const { turnoData } = getDataSlice();
+      const wrap = $$('#bars');
+      const max = Math.max(...turnoData.candidatos.map(c=>c.votos), 1);
+      const busca = state.busca.trim().toLowerCase();
+      let lista = [...turnoData.candidatos];
+      if (busca) lista = lista.filter(c => `${c.nome} ${c.partido} ${c.numero}`.toLowerCase().includes(busca));
+      if (state.order === 'votos') lista.sort((a,b)=> b.votos - a.votos);
+      if (state.order === 'nome') lista.sort((a,b)=> a.nome.localeCompare(b.nome));
+      if (state.order === 'numero') lista.sort((a,b)=> a.numero - b.numero);
+
+      wrap.innerHTML = '';
+      lista.forEach(c => {
+        const pctW = (c.votos / max) * 100;
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+          <div class="muted">${c.nome.split(' ')[0]}</div>
+          <div class="track"><div class="fill" style="width:${pctW}%;"></div></div>
+          <div style="font-weight:700;">${fmt(c.votos)}</div>
+        `;
+        wrap.appendChild(div);
+      });
+    }
+
+    function renderAll(){
+      renderResumo();
+      renderCandidatos();
+      renderBars();
+    }
+
+    // ===================== EVENTS =====================
+    selUF.addEventListener('change', () => { state.uf = selUF.value; loadMunicipios(); });
+    selMunicipio.addEventListener('change', () => { state.municipio = selMunicipio.value; loadCargos(); });
+    selCargo.addEventListener('change', () => { state.cargo = selCargo.value; loadTurnos(); });
+    selTurno.addEventListener('change', () => { state.turno = selTurno.value; renderAll(); });
+    selOrder.addEventListener('change', () => { state.order = selOrder.value; renderCandidatos(); renderBars(); });
+    txtBusca.addEventListener('input', () => { state.busca = txtBusca.value; renderCandidatos(); renderBars(); });
+
+    $$('#btnRefresh').addEventListener('click', () => window.location.reload());
+    $$('#btnAbout').addEventListener('click', () => alert('Protótipo local com dados de exemplo. Use para fins didáticos em trabalhos escolares.'));
+
+    // Boot
+    loadUF();
+  </script>
+</body>
+</html>
